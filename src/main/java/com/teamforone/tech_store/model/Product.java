@@ -32,11 +32,13 @@ public class Product {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "brand_id", columnDefinition = "CHAR(36)")
-    private String brandId;
+    @ManyToOne
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brands brandId;
 
-    @Column(name = "category_id", columnDefinition = "CHAR(36)")
-    private String categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Categories categoryId;
 
     @Column(name = "default_image", nullable = false)
     private String imageUrl;
