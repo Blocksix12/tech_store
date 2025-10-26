@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "product_id", columnDefinition = "CHAR(36)")
     private UUID id;
 
@@ -41,20 +42,27 @@ public class Product {
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private status productStatus;
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('draft','published','archived') DEFAULT 'published'")
+    private Status productStatus = Status.PUBLISHED;
 
     @CreationTimestamp
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at")
     private Date createdAt;
 
-    @CreationTimestamp
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private Date updatedAt;
 
-    private enum status {
+    public enum Status {
         DRAFT,
         PUBLISHED,
-        ARCHIVED
+        ARCHIVED;
+
+        public static Status toEnum(String type) {
+            for (Status item : values()) {
+                if (item.toString().equalsIgnoreCase(type)) return item;
+            }
+            return null;
+        }
     }
 }
