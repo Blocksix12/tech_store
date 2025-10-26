@@ -1,0 +1,33 @@
+package com.teamforone.tech_store.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.util.Date;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "storage")
+public class Storage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "storageID", columnDefinition = "CHAR(36)")
+    private String storageID;
+
+    @Column(name = "ram", nullable = false)
+    private String ram;
+
+    @Column(name = "rom", nullable = false)
+    private String rom;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+}
