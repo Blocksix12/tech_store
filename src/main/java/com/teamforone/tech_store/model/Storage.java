@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ public class Storage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "storageID", columnDefinition = "CHAR(36)")
-    private String storageID;
+    private UUID storageID;
 
     @Column(name = "ram", nullable = false)
     private String ram;

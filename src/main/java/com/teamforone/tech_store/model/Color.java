@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +18,7 @@ public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "colorID", columnDefinition = "CHAR(36)")
-    private String colorID;
+    private UUID colorID;
 
     @Column(name = "colorname", nullable = false)
     private String colorName;
