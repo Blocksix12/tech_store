@@ -40,7 +40,7 @@ public class NhanVien {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", columnDefinition = "ENUM('ACTIVE','LOCKED') DEFAULT 'ACTIVE'")
-    private User.Status status = User.Status.active;
+    private Status status = Status.ACTIVE;
 
     @CreationTimestamp
     @Column(name = "created_at")

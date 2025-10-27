@@ -29,17 +29,17 @@ public class OrderItem {
     private Orders order;
 
     @ManyToOne
-    @JoinColumn(name = "colorID", nullable = false)
+    @JoinColumn(name = "colorID")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "sizeID", nullable = false)
+    @JoinColumn(name = "sizeID")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private DisplaySize displaySize;
 
     @ManyToOne
-    @JoinColumn(name = "storageID", nullable = false)
+    @JoinColumn(name = "storageID")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Storage storage;
 

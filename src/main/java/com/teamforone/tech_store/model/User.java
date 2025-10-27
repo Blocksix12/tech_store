@@ -39,8 +39,8 @@ public class User {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "ENUM('active','locked') DEFAULT 'active'")
-    private Status status = Status.active;
+    @Column(name = "status", columnDefinition = "ENUM('ACTIVE','LOCKED') DEFAULT 'ACTIVE'")
+    private Status status = Status.ACTIVE;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -51,8 +51,8 @@ public class User {
     private Date updatedAt;
 
     public enum Status {
-        active,
-        locked;
+        ACTIVE,
+        LOCKED;
 
         private static Status toEnum(String status) {
             for (Status item : values()) {
