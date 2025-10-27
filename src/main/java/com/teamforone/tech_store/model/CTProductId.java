@@ -24,14 +24,13 @@ public class CTProductId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CTProductId that = (CTProductId) o;
-
-        return productId == that.productId &&
-                colorId == that.colorId &&
-                storageId == that.storageId &&
-                sizeId == that.sizeId;
+        return Objects.equals(productId, that.productId) &&
+                Objects.equals(colorId, that.colorId) &&
+                Objects.equals(storageId, that.storageId) &&
+                Objects.equals(sizeId, that.sizeId);
     }
+
 
     @Override
     public int hashCode(){

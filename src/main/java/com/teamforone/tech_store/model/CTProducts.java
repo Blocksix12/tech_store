@@ -16,19 +16,19 @@ import java.util.UUID;
 @Table(name = "ctproducts")
 public class CTProducts {
     @Id
-    @Column(name = "product_id", columnDefinition = "CHAR(36)")
+    @Column(name = "product_id", nullable = false)
     private UUID productId;
 
     @Id
-    @Column(name = "colorID", columnDefinition = "CHAR(36)")
+    @Column(name = "colorID", nullable = false)
     private UUID colorId;
 
     @Id
-    @Column(name = "storageID", columnDefinition = "CHAR(36)")
+    @Column(name = "storageID", nullable = false)
     private UUID storageId;
 
     @Id
-    @Column(name = "sizeID", columnDefinition = "CHAR(36)")
+    @Column(name = "sizeID", nullable = false)
     private UUID sizeId;
 
     @Column(name = "price", nullable = false)

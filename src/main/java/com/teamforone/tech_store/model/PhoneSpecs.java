@@ -23,15 +23,15 @@ public class PhoneSpecs {
     private UUID phoneSpecsID;
 
     @OneToOne
-    @JoinColumn(name = "product_id", nullable = false, unique = true, columnDefinition = "CHAR(36)")
+    @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
 
     @OneToOne
-    @JoinColumn(name = "sizeID", columnDefinition = "CHAR(36)")
+    @JoinColumn(name = "sizeID")
     private DisplaySize displaySize;
 
     @OneToOne
-    @JoinColumn(name = "storageID", columnDefinition = "CHAR(36)")
+    @JoinColumn(name = "storageID")
     private Storage storage;
 
     @Column(name = "rear_camera_main")
