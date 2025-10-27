@@ -1,0 +1,72 @@
+package com.teamforone.tech_store.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "order_items")
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "order_item_id", columnDefinition = "CHAR(36)")
+    private UUID orderItemID;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Orders order;
+
+    @ManyToOne
+    @JoinColumn(name = "colorID", nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Color color;
+
+    @ManyToOne
+    @JoinColumn(name = "sizeID", nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private DisplaySize displaySize;
+
+    @ManyToOne
+    @JoinColumn(name = "storageID", nullable = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Storage storage;
+
+    @Column(name = "quantity", columnDefinition = "INT DEFAULT 1 CHECK (quantity > 0)")
+    private Integer quantity;
+
+    @Column(name = "subtotal", precision = 10, scale = 2)
+    private BigDecimal subTotal;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "ENUM('PENDING','SHIPPED','DELIVERED','RETURNED','PAID','PROCESSING','CANCELLED') DEFAULT 'PENDING'")
+    private OrderItemStatus status;
+
+    public enum OrderItemStatus {
+        PENDING,
+        SHIPPED,
+        DELIVERED,
+        RETURNED,
+        PAID,
+        PROCESSING,
+        CANCELLED;
+
+        private static OrderItemStatus toEnum(String status) {
+            for (OrderItemStatus item : values()) {
+                if (item.toString().equalsIgnoreCase(status)) return item;
+            }
+            return null;
+        }
+    }
+}
