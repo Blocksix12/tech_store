@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,9 +20,9 @@ import java.util.UUID;
 @Table(name = "shipping")
 public class Shipping {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "shipping_id", columnDefinition = "CHAR(36)")
-    private UUID shippingID;
+    private String shippingID;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

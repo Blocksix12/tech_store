@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,9 +19,9 @@ import java.util.UUID;
 @Table(name = "storage")
 public class Storage {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "storageID", columnDefinition = "CHAR(36)")
-    private UUID storageID;
+    private String storageID;
 
     @Column(name = "ram", nullable = false)
     private String ram;

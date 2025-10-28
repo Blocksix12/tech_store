@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -16,9 +17,9 @@ import java.util.UUID;
 @Table(name = "brands")
 public class Brands {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "brand_id", columnDefinition = "CHAR(36)")
-    private UUID brandID;
+    private String brandID;
 
     @Column(name = "brand_name", nullable = false)
     private String brandName;

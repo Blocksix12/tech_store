@@ -17,19 +17,19 @@ import java.util.UUID;
 public class CTProducts {
     @Id
     @Column(name = "product_id", nullable = false)
-    private UUID productId;
+    private String productId;
 
     @Id
     @Column(name = "colorID", nullable = false)
-    private UUID colorId;
+    private String colorId;
 
     @Id
     @Column(name = "storageID", nullable = false)
-    private UUID storageId;
+    private String storageId;
 
     @Id
     @Column(name = "sizeID", nullable = false)
-    private UUID sizeId;
+    private String sizeId;
 
     @Column(name = "price", nullable = false)
     private Double price;
