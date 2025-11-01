@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,9 +19,9 @@ import java.util.UUID;
 @Table(name = "wishlist")
 public class WishList {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "wishlist_id", columnDefinition = "CHAR(36)")
-    private UUID wishListID;
+    private String wishListID;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)

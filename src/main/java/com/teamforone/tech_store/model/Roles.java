@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -16,9 +17,9 @@ import java.util.UUID;
 @Table(name = "roles")
 public class Roles {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "role_id", columnDefinition = "CHAR(36)")
-    private UUID roleID;
+    private String roleID;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name", nullable = false, columnDefinition = "ENUM('ADMIN','MANAGER','STAFF')")

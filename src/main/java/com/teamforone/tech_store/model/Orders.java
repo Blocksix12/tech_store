@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,9 +22,9 @@ import java.util.UUID;
 @Table(name = "orders")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "order_id", columnDefinition = "CHAR(36)")
-    private UUID orderID;
+    private String orderID;
 
     @Column(name = "order_no", unique = true, length = 20)
     private String orderNo;

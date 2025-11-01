@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,9 +20,9 @@ import java.util.UUID;
 @Table(name = "displaysize")
 public class DisplaySize {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "sizeID", columnDefinition = "CHAR(36)")
-    private UUID displaySizeID;
+    private String displaySizeID;
 
     @Column(name = "size_inch", precision = 4, scale = 2, nullable = false)
     private BigDecimal sizeInch;

@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -20,9 +21,9 @@ import java.util.UUID;
 @Table(name = "cart_items")
 public class CartItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "item_id", columnDefinition = "CHAR(36)")
-    private UUID cartItemID;
+    private String cartItemID;
 
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)

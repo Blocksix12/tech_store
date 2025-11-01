@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,9 +19,9 @@ import java.util.UUID;
 @Table(name = "reply")
 public class Reply {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "reply_id", columnDefinition = "CHAR(36)")
-    private UUID replyID;
+    private String replyID;
 
     @ManyToOne
     @JoinColumn(name = "comment_id", nullable = false)

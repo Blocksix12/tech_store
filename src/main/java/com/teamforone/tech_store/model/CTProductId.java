@@ -15,10 +15,10 @@ import java.util.UUID;
 public class CTProductId implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UUID productId;
-    private UUID colorId;
-    private UUID storageId;
-    private UUID sizeId;
+    private String productId;
+    private String colorId;
+    private String storageId;
+    private String sizeId;
 
     @Override
     public boolean equals(Object o) {

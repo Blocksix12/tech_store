@@ -2,6 +2,7 @@ package com.teamforone.tech_store.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,9 +18,9 @@ import java.util.UUID;
 public class Coupon {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "coupon_id", columnDefinition = "CHAR(36)")
-    private UUID couponId;
+    private String couponId;
 
     @Column(name = "code", nullable = false, unique = true, length = 20)
     private String code;
