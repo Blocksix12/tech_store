@@ -23,9 +23,8 @@ public class PhoneSpecs {
     @Column(name = "spec_id", columnDefinition = "CHAR(36)")
     private String phoneSpecsID;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", nullable = false, unique = true)
-    private Product product;
+    @JoinColumn(name = "product_id", nullable = false, columnDefinition = "CHAR(36)", unique = true)
+    private String productID;
 
     @OneToOne
     @JoinColumn(name = "sizeID")

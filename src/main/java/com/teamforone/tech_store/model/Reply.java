@@ -27,9 +27,8 @@ public class Reply {
     @JoinColumn(name = "comment_id", nullable = false)
     private Comment comment;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String user;
 
     @Column(name = "noidung", columnDefinition = "TEXT", nullable = false)
     private String commentText;

@@ -23,13 +23,11 @@ public class Comment {
     @Column(name = "comment_id", columnDefinition = "CHAR(36)")
     private String commentID;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String product;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String user;
 
     @Column(name = "rating", columnDefinition = "INT CHECK (rating >= 1 AND rating <= 5)")
     private int rating;
