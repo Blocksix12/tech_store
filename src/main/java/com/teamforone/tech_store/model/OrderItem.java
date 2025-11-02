@@ -27,20 +27,14 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false, columnDefinition = "CHAR(36)")
     private String order;
 
-    @ManyToOne
-    @JoinColumn(name = "colorID")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private Color color;
+    @JoinColumn(name = "colorID", nullable = false, columnDefinition = "CHAR(36)")
+    private String color;
 
-    @ManyToOne
-    @JoinColumn(name = "sizeID")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private DisplaySize displaySize;
+    @JoinColumn(name = "sizeID", nullable = false, columnDefinition = "CHAR(36)")
+    private String displaySize;
 
-    @ManyToOne
-    @JoinColumn(name = "storageID")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private Storage storage;
+    @JoinColumn(name = "storageID", nullable = false, columnDefinition = "CHAR(36)")
+    private String storage;
 
     @Column(name = "quantity", columnDefinition = "INT DEFAULT 1 CHECK (quantity > 0)")
     private Integer quantity;
