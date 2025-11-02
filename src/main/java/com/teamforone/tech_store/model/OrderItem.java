@@ -24,10 +24,8 @@ public class OrderItem {
     @Column(name = "order_item_id", columnDefinition = "CHAR(36)")
     private String orderItemID;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private Orders order;
+    @JoinColumn(name = "order_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String order;
 
     @ManyToOne
     @JoinColumn(name = "colorID")

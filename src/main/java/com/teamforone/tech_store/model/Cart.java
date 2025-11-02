@@ -23,9 +23,8 @@ public class Cart {
     @Column(name = "cart_id", columnDefinition = "CHAR(36)")
     private String cartID;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String user;
 
     @CreationTimestamp
     @Column(name = "created_at")

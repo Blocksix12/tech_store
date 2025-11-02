@@ -25,9 +25,8 @@ public class Roles {
     @Column(name = "role_name", nullable = false, columnDefinition = "ENUM('ADMIN','MANAGER','STAFF')")
     private RoleName roleName;
 
-    @ManyToOne
-    @JoinColumn(name = "nhanvienID", nullable = false)
-    private NhanVien nhanVien;
+    @JoinColumn(name = "nhanvienID", nullable = false, columnDefinition = "CHAR(36)")
+    private String nhanVien;
 
     public enum RoleName {
         ADMIN,

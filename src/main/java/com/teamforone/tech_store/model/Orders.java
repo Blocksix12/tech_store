@@ -29,20 +29,14 @@ public class Orders {
     @Column(name = "order_no", unique = true, length = 20)
     private String orderNo;
 
-    // === Quan hệ với User ===
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_order_user"))
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private User user;
+    @JoinColumn(name = "user_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String user;
 
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    // === Quan hệ với Shipping ===
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shipping_id", foreignKey = @ForeignKey(name = "fk_order_shipping"))
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private Shipping shipping;
+    @JoinColumn(name = "shipping_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String shipping;
 
     @Column(name = "payment_method", columnDefinition = "ENUM('cod','vnpay','momo','stripe')")
     @Enumerated(EnumType.STRING)
@@ -52,11 +46,8 @@ public class Orders {
     @Column(name = "created_at")
     private Date createdAt;
 
-    // === Quan hệ với NhanVien ===
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nhanvienID", foreignKey = @ForeignKey(name = "fk_order_nhanvien"))
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private NhanVien nhanvien;
+    @JoinColumn(name = "nhanvienID", nullable = false, columnDefinition = "CHAR(36)")
+    private String nhanvien;
 
     public enum PaymentMethod {
         MOMO,

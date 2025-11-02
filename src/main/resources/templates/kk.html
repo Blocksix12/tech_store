@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout}">
+<head>
+    <title>Quản lý tồn kho</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Quản lý tồn kho</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Tồn kho</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#stockInModal">
+                <i class="bi bi-box-arrow-in-down me-2"></i>Nhập kho
+            </button>
+            <button class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#stockOutModal">
+                <i class="bi bi-box-arrow-up me-2"></i>Xuất kho
+            </button>
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#transferModal">
+                <i class="bi bi-arrow-left-right me-2"></i>Điều chuyển
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Tổng giá trị tồn kho</p>
+                            <h3 class="mb-0" th:text="${totalInventoryValue}">156.000.000 ₫</h3>
+                            <small class="text-success">
+                                <i class="bi bi-arrow-up"></i> 5.2% so với tháng trước
+                            </small>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 rounded p-3">
+                            <i class="bi bi-cash-stack fs-2 text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Tổng số lượng</p>
+                            <h3 class="mb-0" th:text="${totalQuantity}">12.456</h3>
+                            <small class="text-muted">sản phẩm</small>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded p-3">
+                            <i class="bi bi-box-seam fs-2 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm border-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Cảnh báo tồn kho thấp</p>
+                            <h3 class="mb-0 text-warning" th:text="${lowStockCount}">23</h3>
+                            <small class="text-muted">sản phẩm</small>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded p-3">
+                            <i class="bi bi-exclamation-triangle fs-2 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm border-danger">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="text-muted mb-1">Hết hàng</p>
+                            <h3 class="mb-0 text-danger" th:text="${outOfStockCount}">5</h3>
+                            <small class="text-muted">sản phẩm</small>
+                        </div>
+                        <div class="bg-danger bg-opacity-10 rounded p-3">
+                            <i class="bi bi-x-circle fs-2 text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warehouse Tabs -->
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link" th:classappend="${warehouseId == null ? 'active' : ''}"
+               href="/admin/inventory">
+                <i class="bi bi-house me-2"></i>Tất cả kho
+            </a>
+        </li>
+        <li class="nav-item" th:each="warehouse : ${warehouses}">
+            <a class="nav-link"
+               th:classappend="${warehouseId == warehouse.id ? 'active' : ''}"
+               th:href="@{/admin/inventory(warehouseId=${warehouse.id})}">
+                <i class="bi bi-building me-2"></i>
+                <span th:text="${warehouse.name}">Kho Miền Nam</span>
+                <span class="badge bg-secondary ms-1" th:text="${warehouse.itemCount}">5,234</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="row g-4">
+        <!-- Inventory List -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>Danh sách tồn kho</h5>
+                        <div class="d-flex gap-2">
+                            <div class="input-group input-group-sm" style="width: 300px;">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" id="searchInput"
+                                       placeholder="Tìm sản phẩm...">
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="exportInventory()">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                            <tr>
+                                <th width="60">Ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>SKU</th>
+                                <th width="100">Tồn kho</th>
+                                <th width="120">Giá trị</th>
+                                <th width="100">Trạng thái</th>
+                                <th width="80">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item : ${inventoryItems}">
+                                <td>
+                                    <img th:src="${item.productImage}"
+                                         class="rounded"
+                                         style="width: 45px; height: 45px; object-fit: cover;">
+                                </td>
+                                <td>
+                                    <div class="fw-bold" th:text="${item.productName}">iPhone 15 Pro Max</div>
+                                    <small class="text-muted" th:text="${item.variantName}">256GB</small>
+                                </td>
+                                <td>
+                                    <code th:text="${item.sku}">IPH15PM-256</code>
+                                </td>
+                                <td>
+                                            <span th:classappend="${item.quantity <= item.lowStockThreshold ? 'text-danger fw-bold' :
+                                                                  item.quantity <= item.lowStockThreshold * 2 ? 'text-warning fw-bold' : ''}"
+                                                  th:text="${item.quantity}">125</span>
+                                </td>
+                                <td>
+                                            <span th:text="${#numbers.formatDecimal(item.totalValue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                                                3.375.000 ₫
+                                            </span>
+                                </td>
+                                <td>
+                                            <span class="badge"
+                                                  th:classappend="${item.quantity == 0 ? 'bg-danger' :
+                                                                  item.quantity <= item.lowStockThreshold ? 'bg-warning' : 'bg-success'}"
+                                                  th:text="${item.quantity == 0 ? 'Hết hàng' :
+                                                            item.quantity <= item.lowStockThreshold ? 'Sắp hết' : 'Còn hàng'}">
+                                                Còn hàng
+                                            </span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                   th:onclick="'showStockIn(' + ${item.id} + ')'">
+                                                    <i class="bi bi-box-arrow-in-down text-success me-2"></i>Nhập kho
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                   th:onclick="'showStockOut(' + ${item.id} + ')'">
+                                                    <i class="bi bi-box-arrow-up text-warning me-2"></i>Xuất kho
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" href="#"
+                                                   th:onclick="'showHistory(' + ${item.id} + ')'">
+                                                    <i class="bi bi-clock-history text-info me-2"></i>Lịch sử
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            Hiển thị <strong th:text="${inventoryItems.size}">20</strong> trong
+                            <strong th:text="${totalItems}">156</strong> sản phẩm
+                        </small>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item"><a class="page-link" href="#">«</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">»</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Low Stock Alert -->
+            <div class="card border-0 shadow-sm mb-4 border-warning">
+                <div class="card-header bg-warning bg-opacity-10">
+                    <h5 class="mb-0 text-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Cảnh báo tồn kho thấp
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item" th:each="alert : ${lowStockAlerts}">
+                            <div class="d-flex align-items-center">
+                                <img th:src="${alert.productImage}"
+                                     class="rounded me-3"
+                                     style="width: 40px; height: 40px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <div class="fw-bold small" th:text="${alert.productName}">iPhone 15</div>
+                                    <small class="text-muted" th:text="${alert.sku}">IPH15-128</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-danger" th:text="${alert.quantity}">5</span>
+                                    <small class="text-muted d-block">còn lại</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="/admin/inventory/alerts" class="btn btn-sm btn-outline-warning w-100">
+                            Xem tất cả cảnh báo <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-activity me-2"></i>Hoạt động gần đây</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item" th:each="activity : ${recentActivities}">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shri

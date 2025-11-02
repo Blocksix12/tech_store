@@ -25,26 +25,20 @@ public class CartItem {
     @Column(name = "item_id", columnDefinition = "CHAR(36)")
     private String cartItemID;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Cart cart;
+    @JoinColumn(name = "cart_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String cart;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_id", nullable = false, columnDefinition = "CHAR(36)")
+    private String product;
 
-    @ManyToOne
-    @JoinColumn(name = "colorID", nullable = false)
-    private Color color;
+    @JoinColumn(name = "colorID", nullable = false, columnDefinition = "CHAR(36)")
+    private String color;
 
-    @ManyToOne
-    @JoinColumn(name = "sizeID", nullable = false)
-    private DisplaySize displaySize;
+    @JoinColumn(name = "sizeID", nullable = false, columnDefinition = "CHAR(36)")
+    private String displaySize;
 
-    @ManyToOne
-    @JoinColumn(name = "storageID", nullable = false)
-    private Storage storage;
+    @JoinColumn(name = "storageID", nullable = false, columnDefinition = "CHAR(36)")
+    private String storage;
 
     @Column(name = "quantity", nullable = false, columnDefinition = "INT DEFAULT 1")
     private int quantity;
