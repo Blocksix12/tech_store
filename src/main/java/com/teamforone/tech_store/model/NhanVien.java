@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -50,6 +51,14 @@ public class NhanVien {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @ManyToMany
+    @JoinTable(
+            name = "nhanvien_roles",
+            joinColumns = @JoinColumn(name = "nhanvien_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Roles> roles;
 
     public enum Status {
         ACTIVE,

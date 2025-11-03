@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +26,16 @@ public class Roles {
     @Column(name = "role_name", nullable = false, columnDefinition = "ENUM('ADMIN','MANAGER','STAFF')")
     private RoleName roleName;
 
-    @JoinColumn(name = "nhanvienID", nullable = false, columnDefinition = "CHAR(36)")
-    private String nhanVien;
+    @ManyToMany(mappedBy = "roles")
+    private Set<NhanVien> nhanViens;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_authorities",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id")
+    )
+    private Set<Authority> authorities;
 
     public enum RoleName {
         ADMIN,
