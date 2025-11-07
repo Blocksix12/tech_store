@@ -15,6 +15,7 @@
     <style>
         :root {
             --sidebar-width: 280px;
+            --sidebar-collapsed-width: 80px;
             --topbar-height: 70px;
             --primary: #6366f1;
             --primary-dark: #4f46e5;
@@ -46,7 +47,7 @@
         }
 
         /* ============================================
-           SIDEBAR STYLES - Modern & Elegant
+           SIDEBAR STYLES - Modern & Elegant with Collapse
         ============================================ */
         .sidebar {
             position: fixed;
@@ -58,9 +59,83 @@
             color: white;
             overflow-y: auto;
             overflow-x: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1050;
             box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar.collapsed .sidebar-brand-text,
+        .sidebar.collapsed .menu-item span:not(.badge),
+        .sidebar.collapsed .menu-section-title,
+        .sidebar.collapsed .bi-chevron-down {
+            opacity: 0;
+            visibility: hidden;
+            width: 0;
+        }
+
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 12px 0;
+        }
+
+        .sidebar.collapsed .menu-item i {
+            margin: 0;
+        }
+
+        .sidebar.collapsed .menu-item .badge {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            padding: 2px 6px;
+            font-size: 0.65rem;
+        }
+
+        .sidebar.collapsed .submenu {
+            display: none !important;
+        }
+
+        .sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+        }
+
+        .sidebar.collapsed:hover {
+            width: var(--sidebar-width);
+        }
+
+        .sidebar.collapsed:hover .sidebar-brand-text,
+        .sidebar.collapsed:hover .menu-item span:not(.badge),
+        .sidebar.collapsed:hover .menu-section-title,
+        .sidebar.collapsed:hover .bi-chevron-down {
+            opacity: 1;
+            visibility: visible;
+            width: auto;
+            transition-delay: 0.1s;
+        }
+
+        .sidebar.collapsed:hover .menu-item {
+            justify-content: flex-start;
+            padding: 12px 24px;
+        }
+
+        .sidebar.collapsed:hover .menu-item i {
+            margin-right: 12px;
+        }
+
+        .sidebar.collapsed:hover .menu-item .badge {
+            position: static;
+            margin-left: auto;
+        }
+
+        .sidebar.collapsed:hover .submenu {
+            display: block !important;
+        }
+
+        .sidebar.collapsed:hover .sidebar-brand {
+            justify-content: flex-start;
         }
 
         .sidebar::-webkit-scrollbar {
