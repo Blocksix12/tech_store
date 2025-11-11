@@ -1,10 +1,7 @@
 package com.teamforone.tech_store.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -14,20 +11,23 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "comment")
 public class Comment {
+
     @Id
     @UuidGenerator
-    @Column(name = "comment_id", columnDefinition = "CHAR(36)")
     private String commentID;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false, columnDefinition = "CHAR(36)")
-    private String product;
+    private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, columnDefinition = "CHAR(36)")
-    private String user;
+    private User user;
 
     @Column(name = "rating", columnDefinition = "INT CHECK (rating >= 1 AND rating <= 5)")
     private int rating;
@@ -36,7 +36,7 @@ public class Comment {
     private String commentText;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'pending'")
+    @Column(name = "status", columnDefinition = "ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'PENDING'")
     private Status status;
 
     @CreationTimestamp
@@ -46,14 +46,24 @@ public class Comment {
     @Column(name = "luotthich", columnDefinition = "INT DEFAULT 0")
     private Integer likeCount;
 
+    // Tự động set ID và default status trước khi persist
+    @PrePersist
+    public void prePersist() {
+        if (this.commentID == null) {
+            this.commentID = UUID.randomUUID().toString();
+        }
+        if (this.status == null) {
+            this.status = Status.PENDING;
+        }
+    }
 
     public enum Status {
         PENDING,
         APPROVED,
         REJECTED;
 
-        private static Status toEnum(String value) {
-            for(Status status : Status.values()){
+        public static Status toEnum(String value) {
+            for (Status status : Status.values()) {
                 if (status.toString().equalsIgnoreCase(value)) return status;
             }
             return null;
