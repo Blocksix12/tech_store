@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/admin/comments")
+@RequestMapping("/admin/comments")
 public class CommentController {
 
     private final CommentService commentService;
