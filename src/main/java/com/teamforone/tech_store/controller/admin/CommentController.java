@@ -1,10 +1,9 @@
 package com.teamforone.tech_store.controller.admin;
 
 import com.teamforone.tech_store.model.Comment;
-import com.teamforone.tech_store.model.Reply;
 import com.teamforone.tech_store.service.admin.CommentService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,41 +18,47 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    // ====== LẤY DANH SÁCH TẤT CẢ BÌNH LUẬN ======
+    // ====== TRANG QUẢN LÝ COMMENT ======
     @GetMapping
-    public ResponseEntity<List<Comment>> getAllComments() {
+    public String commentsPage(Model model) {
         List<Comment> comments = commentService.findAllComments();
-        return ResponseEntity.ok(comments);
+        for (Comment c : comments) {
+            System.out.println("CommentID: " + c.getCommentID());
+            System.out.println("Status: " + c.getStatus());
+            System.out.println("CreatedAt: " + c.getCreatedAt());
+        }
+        model.addAttribute("comments", comments);
+        return "admin/Comment"; // file src/main/resources/templates/admin/comments.html
     }
 
     // ====== DUYỆT BÌNH LUẬN ======
     @PostMapping("/{id}/approve")
-    public ResponseEntity<Comment> approveComment(@PathVariable("id") String commentId) {
-        Comment approved = commentService.approveComment(commentId);
-        return ResponseEntity.ok(approved);
+    public String approveComment(@PathVariable("id") String commentId) {
+        commentService.approveComment(commentId);
+        return "redirect:/admin/comments";
     }
 
-    // ====== ẨN (NỘI DUNG XẤU) ======
+    // ====== ẨN BÌNH LUẬN ======
     @PostMapping("/{id}/hide")
-    public ResponseEntity<Comment> hideComment(@PathVariable("id") String commentId) {
-        Comment hidden = commentService.hideComment(commentId);
-        return ResponseEntity.ok(hidden);
+    public String hideComment(@PathVariable("id") String commentId) {
+        commentService.hideComment(commentId);
+        return "redirect:/admin/comments";
     }
 
     // ====== XOÁ BÌNH LUẬN ======
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("id") String commentId) {
+    @PostMapping("/{id}/delete")
+    public String deleteComment(@PathVariable("id") String commentId) {
         commentService.deleteComment(commentId);
-        return ResponseEntity.noContent().build();
+        return "redirect:/admin/comments";
     }
 
     // ====== ADMIN TRẢ LỜI BÌNH LUẬN ======
     @PostMapping("/{id}/reply")
-    public ResponseEntity<Reply> replyToComment(
+    public String replyToComment(
             @PathVariable("id") String commentId,
             @RequestParam("adminId") String adminId,
-            @RequestBody String content) {
-        Reply reply = commentService.replyToComment(commentId, adminId, content);
-        return ResponseEntity.ok(reply);
+            @RequestParam("content") String content) {
+        commentService.replyToComment(commentId, adminId, content);
+        return "redirect:/admin/comments";
     }
 }

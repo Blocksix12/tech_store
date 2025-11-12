@@ -19,6 +19,7 @@ public class Comment {
 
     @Id
     @UuidGenerator
+    @Column(name = "comment_id", updatable = false, nullable = false)
     private String commentID;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,11 +37,11 @@ public class Comment {
     private String commentText;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'PENDING'")
+    @Column(name = "status", nullable = false)
     private Status status;
 
     @CreationTimestamp
-    @Column(name = "ngaybl", nullable = false)
+    @Column(name = "ngaybl", nullable = false, insertable = false, updatable = false)
     private Date createdAt;
 
     @Column(name = "luotthich", columnDefinition = "INT DEFAULT 0")
