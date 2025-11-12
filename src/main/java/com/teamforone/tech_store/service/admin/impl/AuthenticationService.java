@@ -41,7 +41,6 @@ public class AuthenticationService {
                     .build();
         }
 
-
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(username, password);
 
@@ -100,7 +99,7 @@ public class AuthenticationService {
 
         return LoginResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(newRefreshToken)
                 .userId(nhanVien.getId())
                 .message("Refresh token successfully")
                 .status(HttpStatus.OK.value())

@@ -6,9 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -29,7 +31,7 @@ public class NhanVien implements UserDetails {
     @Column(name = "password_hash", nullable = false)
     private String password;
 
-    @Column(name = "fullname", nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullname;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -38,10 +40,10 @@ public class NhanVien implements UserDetails {
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
-    @Column(name = "access_token")
+    @Column(name = "access_token", length = 1000)
     private String accessToken;
 
-    @Column(name = "refresh_token")
+    @Column(name = "refresh_token", length = 1000)
     private String refreshToken;
 
     @Enumerated(EnumType.STRING)
@@ -66,8 +68,21 @@ public class NhanVien implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        // Thêm roles
+        roles.forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName().name()));
+
+            // Thêm permissions của từng role
+            role.getPermissions().forEach(permission -> {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+        });
+
+        return authorities;
     }
+
     @Override
     public String getPassword() {
         return this.password;

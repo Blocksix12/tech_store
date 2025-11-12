@@ -20,7 +20,7 @@ public class Roles {
     private String roleID;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role_name", nullable = false, columnDefinition = "ENUM('ADMIN','MANAGER','STAFF')")
+    @Column(name = "role_name", nullable = false)
     private RoleName roleName;
 
     @Column(name = "description")

@@ -4,19 +4,23 @@ import com.teamforone.tech_store.model.NhanVien;
 import com.teamforone.tech_store.repository.admin.RBAC.NhanVienRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +36,23 @@ public class JwtService {
 
     private final NhanVienRepository nhanVienRepository;
     public String generateToken(UserDetails userDetails) {
-        return buildToken(Map.of(), userDetails, expiration);
+        Map<String, Object> claims = new HashMap<>();
+        // Thêm roles vào claims
+        String roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        claims.put("roles", roles);
+        return buildToken(claims, userDetails, expiration);
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(Map.of(), userDetails, refreshExpiration);
+        Map<String, Object> claims = new HashMap<>();
+        // Thêm roles vào refresh token
+        String roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        claims.put("roles", roles);
+        return buildToken(claims, userDetails, refreshExpiration);
     }
 
     private String buildToken(Map<String, Object> claims, UserDetails userDetails, long expiration) {
@@ -78,6 +94,10 @@ public class JwtService {
     private SecretKey getSignInKey(String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String extractRoles(String token) {
+        return extractClaim(token, claims -> claims.get("roles", String.class));
     }
 
     public boolean verifyToken(String token) {
