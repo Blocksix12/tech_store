@@ -42,8 +42,8 @@
                     </thead>
                     <tbody>
                     <!-- Lặp qua danh sách comments -->
-                    <tr th:each="comment : ${comments}">
-                        <td th:text="${comment.commentID}"></td>
+                    <tr th:each="comment, iterStat : ${comments}">
+                        <td th:text="${iterStat.index + 1}"></td>
                         <td th:text="${comment.user.username}"></td>
                         <td th:text="${comment.product.name}"></td>
 
@@ -72,8 +72,9 @@
 
                         <!-- Các nút thao tác -->
                         <td>
-                            <form th:action="@{'/admin/comments/' + ${comment.commentID} + '/delete'}" method="post" style="display:inline;" onclick="deleteComment('${comment.commentID}', this.form)">
-                                <button type="submit" class="btn btn-sm btn-outline-danger btn-action">
+                            <form th:action="@{'/admin/comments/' + ${comment.commentID} + '/delete'}" method="post" style="display:inline;" >
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-action"
+                                        onclick="deleteComment('${comment.commentID}', this.form)">
                                     <i class="bi bi-trash"></i> Xóa
                                 </button>
                             </form>
