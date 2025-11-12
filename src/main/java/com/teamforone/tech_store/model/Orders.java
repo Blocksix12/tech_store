@@ -49,6 +49,10 @@ public class Orders {
     @JoinColumn(name = "nhanvienID", nullable = false, columnDefinition = "CHAR(36)")
     private String nhanvien;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private OrderStatus status = OrderStatus.PENDING;
+
     public enum PaymentMethod {
         MOMO,
         VNPAY,
@@ -61,5 +65,12 @@ public class Orders {
             }
             return null;
         }
+    }
+    public enum OrderStatus {
+        PENDING,
+        PROCESSING,
+        SHIPPED,
+        DELIVERED,
+        CANCELLED;
     }
 }

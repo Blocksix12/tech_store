@@ -24,16 +24,16 @@ public class OrderItem {
     @Column(name = "order_item_id", columnDefinition = "CHAR(36)")
     private String orderItemID;
 
-    @JoinColumn(name = "order_id", nullable = false, columnDefinition = "CHAR(36)")
+    @Column(name = "order_id", nullable = false, columnDefinition = "CHAR(36)")
     private String order;
 
-    @JoinColumn(name = "colorID", nullable = false, columnDefinition = "CHAR(36)")
+    @Column(name = "color_id", nullable = false, columnDefinition = "CHAR(36)")
     private String color;
 
-    @JoinColumn(name = "sizeID", nullable = false, columnDefinition = "CHAR(36)")
+    @Column(name = "size_id", nullable = false, columnDefinition = "CHAR(36)")
     private String displaySize;
 
-    @JoinColumn(name = "storageID", nullable = false, columnDefinition = "CHAR(36)")
+    @Column(name = "storage_id", nullable = false, columnDefinition = "CHAR(36)")
     private String storage;
 
     @Column(name = "quantity", columnDefinition = "INT DEFAULT 1 CHECK (quantity > 0)")
@@ -43,8 +43,8 @@ public class OrderItem {
     private BigDecimal subTotal;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", columnDefinition = "ENUM('PENDING','SHIPPED','DELIVERED','RETURNED','PAID','PROCESSING','CANCELLED') DEFAULT 'PENDING'")
-    private OrderItemStatus status;
+    @Column(name = "status")
+    private OrderItemStatus status = OrderItemStatus.PENDING;
 
     public enum OrderItemStatus {
         PENDING,
